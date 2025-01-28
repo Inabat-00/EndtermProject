@@ -1,4 +1,3 @@
-
 import java.sql.*;
 import java.util.Scanner;
 
@@ -27,7 +26,7 @@ public class Customers {
         System.out.println("Please enter your password:");
         String pass = scanner.nextLine().trim();
 
-        String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+        String query = "SELECT * FROM customers WHERE email = ? AND password = ?";
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -59,7 +58,7 @@ public class Customers {
         System.out.println("Please create a password:");
         String pass = scanner.nextLine().trim();
 
-        String insertQuery = "INSERT INTO users (name, phone, email, password) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO customers (name, phone, email, password) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
@@ -78,4 +77,3 @@ public class Customers {
         }
     }
 }
-
