@@ -14,13 +14,13 @@ public class Main {
         if (role.equals("admin")) {
             Admin admin = new Admin();
             if (admin.start(url, user, password)) {
-                Menu menu = new Menu();
-                menu.displayMenu(url, user, password);
+                System.out.println("Admin session ended.");
             }
         } else if (role.equals("customer")) {
             Customers customers = new Customers();
             if (customers.start(url, user, password)) {
-                Menu menu = new Menu();
+                int customerId = customers.getCustomerId();
+                Menu menu = new Menu(customerId);
                 menu.displayMenu(url, user, password);
             }
         } else {

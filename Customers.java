@@ -2,6 +2,12 @@ import java.sql.*;
 import java.util.Scanner;
 
 class Customers {
+    private int customerId;
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
     public boolean start(String url, String user, String password) {
         Scanner scanner = new Scanner(System.in);
 
@@ -36,8 +42,9 @@ class Customers {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+                customerId = resultSet.getInt("customer_id");
                 System.out.println("You have successfully logged in! Welcome back, " + resultSet.getString("name") + "!");
-                return true; // Login successful
+                return true;
             } else {
                 System.out.println("No such account exists. Please try again.");
                 return false;
@@ -51,19 +58,19 @@ class Customers {
     }
 
     private boolean register(Scanner scanner, String url, String user, String password) {
-        System.out.println("Please enter your name:");
+        System.out.print("Enter your name: ");
         String name = scanner.nextLine().trim();
-        System.out.println("Please enter your phone number:");
+        System.out.print("Enter your phone number: ");
         String phone = scanner.nextLine().trim();
-        System.out.println("Please enter your email:");
+        System.out.print("Enter your email: ");
         String email = scanner.nextLine().trim();
-        System.out.println("Please create a password:");
+        System.out.print("Create a password: ");
         String pass = scanner.nextLine().trim();
 
-        String insertQuery = "INSERT INTO customers (name, phone, email, password) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO customers (name, phone, email, password) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, phone);
@@ -72,7 +79,7 @@ class Customers {
             preparedStatement.executeUpdate();
 
             System.out.println("Registration successful! Welcome, " + name + "!");
-            return true; // Registration successful
+            return true;
 
         } catch (SQLException e) {
             System.out.println("Error during registration:");

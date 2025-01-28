@@ -23,7 +23,7 @@ class Admin {
 
                 if (resultSet.next()) {
                     System.out.println("You have successfully logged in as an administrator. Welcome, " + adminName + "!");
-                    adminMenu(connection); // Open admin menu
+                    adminMenu(connection);
                     return true;
                 } else {
                     System.out.println("Invalid username or password.");
@@ -54,26 +54,18 @@ class Admin {
             System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    viewProducts(connection);
-                    break;
-                case 2:
-                    addProduct(connection, scanner);
-                    break;
-                case 3:
-                    editProduct(connection, scanner);
-                    break;
-                case 4:
-                    deleteProduct(connection, scanner);
-                    break;
-                case 5:
+                case 1 -> viewProducts(connection);
+                case 2 -> addProduct(connection, scanner);
+                case 3 -> editProduct(connection, scanner);
+                case 4 -> deleteProduct(connection, scanner);
+                case 5 -> {
                     System.out.println("Exiting admin menu...");
                     return;
-                default:
-                    System.out.println("Invalid choice. Try again.");
+                }
+                default -> System.out.println("Invalid choice. Try again.");
             }
         }
     }
@@ -105,7 +97,7 @@ class Admin {
         String category = scanner.nextLine().trim();
         System.out.print("Enter product price: ");
         double price = scanner.nextDouble();
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine();
 
         String query = "INSERT INTO products (name, category, price) VALUES (?, ?, ?)";
 
@@ -124,7 +116,7 @@ class Admin {
     private void editProduct(Connection connection, Scanner scanner) {
         System.out.print("Enter the product ID to edit: ");
         int productId = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine();
 
         System.out.print("Enter new product name: ");
         String name = scanner.nextLine().trim();
@@ -132,7 +124,7 @@ class Admin {
         String category = scanner.nextLine().trim();
         System.out.print("Enter new product price: ");
         double price = scanner.nextDouble();
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine();
 
         String query = "UPDATE products SET name = ?, category = ?, price = ? WHERE product_id = ?";
 
@@ -152,7 +144,7 @@ class Admin {
     private void deleteProduct(Connection connection, Scanner scanner) {
         System.out.print("Enter the product ID to delete: ");
         int productId = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        scanner.nextLine();
 
         String query = "DELETE FROM products WHERE product_id = ?";
 

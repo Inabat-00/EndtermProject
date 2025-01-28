@@ -2,50 +2,74 @@ import java.sql.*;
 import java.util.Scanner;
 
 class Menu {
+    private int customerId; // Customer ID for cart operations
+    private Cart cart; // Instance of the Cart class
+
+    public Menu(int customerId) {
+        this.customerId = customerId;
+        this.cart = new Cart(customerId); // Initialize the Cart class
+    }
+
     public void displayMenu(String url, String user, String password) {
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-             Scanner scanner = new Scanner(System.in)) {
+        Scanner scanner = new Scanner(System.in);
+        boolean keepRunning = true; // Flag to control the menu loop
 
-            while (true) {
-                System.out.println("\nMenu:");
-                System.out.println("1. View Products");
-                System.out.println("2. Add Product to Cart");
-                System.out.println("3. Exit");
-                System.out.print("Enter your choice: ");
-                int choice = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character
+        while (keepRunning) {
+            System.out.println("\nMenu:");
+            System.out.println("1. View Products");
+            System.out.println("2. Add Product to Cart");
+            System.out.println("3. Exit");
+            System.out.println("4. Search Products by Name");
+            System.out.println("5. View Cart");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
 
-                switch (choice) {
-                    case 1:
-                        viewProducts(connection);
-                        break;
-                    case 2:
-                        addToCart(connection, scanner);
-                        break;
-                    case 3:
-                        System.out.println("Exiting...");
-                        return;
-                    default:
-                        System.out.println("Invalid choice. Try again.");
+            switch (choice) {
+                case 1 -> {
+                    viewProducts(url, user, password);
+                    promptReturnToMenu(scanner);
                 }
+                case 2 -> {
+                    viewProducts(url, user, password); // Display products before adding to cart
+                    System.out.print("\nEnter the product ID to add to your cart: ");
+                    int productId = scanner.nextInt();
+                    System.out.print("Enter the quantity: ");
+                    int quantity = scanner.nextInt();
+                    scanner.nextLine(); // Consume the newline character
+                    cart.addToCart(url, user, password, productId, quantity);
+                    promptReturnToMenu(scanner);
+                }
+                case 3 -> {
+                    System.out.println("Exiting menu... Thank you for shopping with us!");
+                    keepRunning = false; // Exit the menu loop
+                }
+                case 4 -> {
+                    searchProducts(url, user, password, scanner);
+                    promptReturnToMenu(scanner);
+                }
+                case 5 -> {
+                    cart.viewCart(url, user, password); // View the cart using the Cart class
+                    promptReturnToMenu(scanner);
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
             }
-
-        } catch (SQLException e) {
-            System.out.println("Error connecting to database: " + e.getMessage());
         }
     }
 
-    private void viewProducts(Connection connection) {
+    private void viewProducts(String url, String user, String password) {
         String query = "SELECT * FROM products LIMIT 10";
 
-        try (Statement statement = connection.createStatement();
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
             System.out.println("\nAvailable Products:");
             while (resultSet.next()) {
-                System.out.printf("ID: %d, Name: %s, Price: %.2f\n",
+                System.out.printf("ID: %d, Name: %s, Category: %s, Price: %.2f\n",
                         resultSet.getInt("product_id"),
                         resultSet.getString("name"),
+                        resultSet.getString("category"),
                         resultSet.getDouble("price"));
             }
 
@@ -54,25 +78,40 @@ class Menu {
         }
     }
 
-    private void addToCart(Connection connection, Scanner scanner) {
-        System.out.print("\nEnter the product ID to add to your cart: ");
-        int productId = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+    private void searchProducts(String url, String user, String password, Scanner scanner) {
+        System.out.print("Enter the product name or keyword to search: ");
+        String keyword = scanner.nextLine().trim();
 
-        System.out.print("Enter the quantity: ");
-        int quantity = scanner.nextInt();
-        scanner.nextLine(); // Consume the newline character
+        String query = "SELECT * FROM products WHERE name ILIKE ? LIMIT 10";
 
-        String query = "INSERT INTO cart (product_id, quantity) VALUES (?, ?)";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, productId);
-            preparedStatement.setInt(2, quantity);
-            preparedStatement.executeUpdate();
+            preparedStatement.setString(1, "%" + keyword + "%");
 
-            System.out.println("Product successfully added to the cart!");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                System.out.println("\nSearch Results:");
+                boolean found = false;
+                while (resultSet.next()) {
+                    found = true;
+                    System.out.printf("ID: %d, Name: %s, Category: %s, Price: %.2f\n",
+                            resultSet.getInt("product_id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("category"),
+                            resultSet.getDouble("price"));
+                }
+                if (!found) {
+                    System.out.println("No products found matching your search.");
+                }
+            }
+
         } catch (SQLException e) {
-            System.out.println("Error adding product to the cart: " + e.getMessage());
+            System.out.println("Error searching products: " + e.getMessage());
         }
+    }
+
+    private void promptReturnToMenu(Scanner scanner) {
+        System.out.println("\nPress Enter to return to the menu...");
+        scanner.nextLine(); // Wait for the user to press Enter
     }
 }
