@@ -42,7 +42,7 @@ class Customers {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                customerId = resultSet.getInt("customer_id");
+                customerId = resultSet.getInt("customer_id"); // Save the logged-in customer's ID
                 System.out.println("You have successfully logged in! Welcome back, " + resultSet.getString("name") + "!");
                 return true;
             } else {
@@ -67,24 +67,36 @@ class Customers {
         System.out.print("Create a password: ");
         String pass = scanner.nextLine().trim();
 
-        String query = "INSERT INTO customers (name, phone, email, password) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO customers (name, phone, email, password) VALUES (?, ?, ?, ?)";
+        String selectQuery = "SELECT customer_id FROM customers WHERE email = ?";
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
+             PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
 
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, phone);
-            preparedStatement.setString(3, email);
-            preparedStatement.setString(4, pass);
-            preparedStatement.executeUpdate();
+            // Insert the new customer
+            insertStatement.setString(1, name);
+            insertStatement.setString(2, phone);
+            insertStatement.setString(3, email);
+            insertStatement.setString(4, pass);
+            insertStatement.executeUpdate();
 
-            System.out.println("Registration successful! Welcome, " + name + "!");
-            return true;
+            // Retrieve the customer ID for the newly registered user
+            selectStatement.setString(1, email);
+            try (ResultSet resultSet = selectStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    customerId = resultSet.getInt("customer_id"); // Save the customerId
+                    System.out.println("Registration successful! Welcome, " + name + "!");
+                    return true;
+                }
+            }
 
         } catch (SQLException e) {
             System.out.println("Error during registration:");
             e.printStackTrace();
             return false;
         }
+
+        return false;
     }
 }

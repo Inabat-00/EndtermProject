@@ -1,4 +1,3 @@
-import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
@@ -13,13 +12,11 @@ public class Main {
 
         if (role.equals("admin")) {
             Admin admin = new Admin();
-            if (admin.start(url, user, password)) {
-                System.out.println("Admin session ended.");
-            }
+            admin.start(url, user, password);
         } else if (role.equals("customer")) {
             Customers customers = new Customers();
             if (customers.start(url, user, password)) {
-                int customerId = customers.getCustomerId();
+                int customerId = customers.getCustomerId(); // Retrieve the logged-in user's ID
                 Menu menu = new Menu(customerId);
                 menu.displayMenu(url, user, password);
             }

@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 class Menu {
@@ -15,44 +16,49 @@ class Menu {
         boolean keepRunning = true; // Flag to control the menu loop
 
         while (keepRunning) {
-            System.out.println("\nMenu:");
-            System.out.println("1. View Products");
-            System.out.println("2. Add Product to Cart");
-            System.out.println("3. Exit");
-            System.out.println("4. Search Products by Name");
-            System.out.println("5. View Cart");
-            System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            try {
+                System.out.println("\nMenu:");
+                System.out.println("1. View Products");
+                System.out.println("2. Add Product to Cart");
+                System.out.println("3. Exit");
+                System.out.println("4. Search Products by Name");
+                System.out.println("5. View Cart");
+                System.out.print("Enter your choice: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
 
-            switch (choice) {
-                case 1 -> {
-                    viewProducts(url, user, password);
-                    promptReturnToMenu(scanner);
+                switch (choice) {
+                    case 1 -> {
+                        viewProducts(url, user, password);
+                        promptReturnToMenu(scanner);
+                    }
+                    case 2 -> {
+                        viewProducts(url, user, password); // Display products before adding to cart
+                        System.out.print("\nEnter the product ID to add to your cart: ");
+                        int productId = scanner.nextInt();
+                        System.out.print("Enter the quantity: ");
+                        int quantity = scanner.nextInt();
+                        scanner.nextLine(); // Consume the newline character
+                        cart.addToCart(url, user, password, productId, quantity);
+                        promptReturnToMenu(scanner);
+                    }
+                    case 3 -> {
+                        System.out.println("Exiting menu... Thank you for shopping with us!");
+                        keepRunning = false; // Exit the menu loop
+                    }
+                    case 4 -> {
+                        searchProducts(url, user, password, scanner);
+                        promptReturnToMenu(scanner);
+                    }
+                    case 5 -> {
+                        cart.viewCart(url, user, password); // View the cart using the Cart class
+                        promptReturnToMenu(scanner);
+                    }
+                    default -> System.out.println("Invalid choice. Please enter a number between 1 and 5.");
                 }
-                case 2 -> {
-                    viewProducts(url, user, password); // Display products before adding to cart
-                    System.out.print("\nEnter the product ID to add to your cart: ");
-                    int productId = scanner.nextInt();
-                    System.out.print("Enter the quantity: ");
-                    int quantity = scanner.nextInt();
-                    scanner.nextLine(); // Consume the newline character
-                    cart.addToCart(url, user, password, productId, quantity);
-                    promptReturnToMenu(scanner);
-                }
-                case 3 -> {
-                    System.out.println("Exiting menu... Thank you for shopping with us!");
-                    keepRunning = false; // Exit the menu loop
-                }
-                case 4 -> {
-                    searchProducts(url, user, password, scanner);
-                    promptReturnToMenu(scanner);
-                }
-                case 5 -> {
-                    cart.viewCart(url, user, password); // View the cart using the Cart class
-                    promptReturnToMenu(scanner);
-                }
-                default -> System.out.println("Invalid choice. Please try again.");
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine(); // Clear the invalid input
             }
         }
     }
