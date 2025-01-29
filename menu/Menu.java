@@ -1,8 +1,11 @@
+package menu;
+
+import items.Cart;
 import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-class Menu {
+public class Menu {
     private int customerId; // Customer ID for cart operations
     private Cart cart; // Instance of the Cart class
 
@@ -13,7 +16,7 @@ class Menu {
 
     public void displayMenu(String url, String user, String password) {
         Scanner scanner = new Scanner(System.in);
-        boolean keepRunning = true; // Flag to control the menu loop
+        boolean keepRunning = true;
 
         while (keepRunning) {
             try {
@@ -30,32 +33,14 @@ class Menu {
                 scanner.nextLine(); // Consume the newline character
 
                 switch (choice) {
-                    case 1 -> {
-                        viewProducts(url, user, password);
-                        promptReturnToMenu(scanner);
-                    }
-                    case 2 -> {
-                        viewProducts(url, user, password); // Display products before adding to cart
-                        System.out.print("\n🛍️ Enter the product ID to add to your cart: ");
-                        int productId = scanner.nextInt();
-                        System.out.print("🔢 Enter the quantity: ");
-                        int quantity = scanner.nextInt();
-                        scanner.nextLine(); // Consume the newline character
-                        cart.addToCart(url, user, password, productId, quantity);
-                        promptReturnToMenu(scanner);
-                    }
+                    case 1 -> viewProducts(url, user, password);
+                    case 2 -> addToCart(url, user, password, scanner);
                     case 3 -> {
                         System.out.println("👋 Exiting menu... Thank you for shopping with us! Have a great day! 😊");
-                        keepRunning = false; // Exit the menu loop
+                        keepRunning = false;
                     }
-                    case 4 -> {
-                        searchProducts(url, user, password, scanner);
-                        promptReturnToMenu(scanner);
-                    }
-                    case 5 -> {
-                        cart.viewCart(url, user, password); // View the cart using the Cart class
-                        promptReturnToMenu(scanner);
-                    }
+                    case 4 -> searchProducts(url, user, password, scanner);
+                    case 5 -> cart.viewCart(url, user, password); // View cart
                     default -> System.out.println("⚠️ Invalid choice! Please enter a number between 1 and 5.");
                 }
             } catch (InputMismatchException e) {
@@ -84,6 +69,15 @@ class Menu {
         } catch (SQLException e) {
             System.out.println("❌ Error retrieving products: " + e.getMessage());
         }
+    }
+
+    private void addToCart(String url, String user, String password, Scanner scanner) {
+        viewProducts(url, user, password);
+        System.out.print("\n🛍️ Enter the product ID to add to your cart: ");
+        int productId = scanner.nextInt();
+        System.out.print("🔢 Enter the quantity: ");
+        int quantity = scanner.nextInt();
+        cart.addToCart(url, user, password, productId, quantity);
     }
 
     private void searchProducts(String url, String user, String password, Scanner scanner) {
@@ -116,10 +110,5 @@ class Menu {
         } catch (SQLException e) {
             System.out.println("❌ Error searching products: " + e.getMessage());
         }
-    }
-
-    private void promptReturnToMenu(Scanner scanner) {
-        System.out.println("\n🔄 Press Enter to return to the menu...");
-        scanner.nextLine(); // Wait for the user to press Enter
     }
 }

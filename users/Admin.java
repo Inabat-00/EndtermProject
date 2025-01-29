@@ -1,7 +1,8 @@
+package users;
 import java.sql.*;
 import java.util.Scanner;
 
-class Admin {
+public class Admin {
     public void start(String url, String user, String password) {
         Scanner scanner = new Scanner(System.in);
 

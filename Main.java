@@ -1,3 +1,6 @@
+import users.Admin;
+import menu.Menu;
+import users.Customers;
 import java.util.Scanner;
 
 public class Main {
@@ -16,9 +19,9 @@ public class Main {
         } else if (role.equals("customer")) {
             Customers customers = new Customers();
             if (customers.start(url, user, password)) {
-                int customerId = customers.getCustomerId(); // Retrieve the logged-in user's ID
-                Menu menu = new Menu(customerId);
-                menu.displayMenu(url, user, password);
+                int customerId = customers.getCustomerId(); // Получаем ID клиента
+                Menu menu = new Menu(customerId); // Создаем меню для клиента
+                menu.displayMenu(url, user, password); // Показываем меню
             }
         } else {
             System.out.println("Invalid input. Program terminated.");

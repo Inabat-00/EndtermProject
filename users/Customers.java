@@ -1,7 +1,9 @@
+package users;
+
 import java.sql.*;
 import java.util.Scanner;
 
-class Customers {
+public class Customers {
     private int customerId;
 
     public int getCustomerId() {
@@ -11,7 +13,7 @@ class Customers {
     public boolean start(String url, String user, String password) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Hello, welcome to the Meshki online store!");
+        System.out.println("Hello, welcome to the online store!");
         System.out.println("Do you have an account? (yes/no)");
         String hasAccount = scanner.nextLine().trim().toLowerCase();
 

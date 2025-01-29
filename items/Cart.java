@@ -1,7 +1,8 @@
+package items;
 import java.sql.*;
 import java.util.Scanner;
 
-class Cart {
+public class Cart {
     private int customerId;
 
     public Cart(int customerId) {
