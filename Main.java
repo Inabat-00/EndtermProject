@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         String url = "jdbc:postgresql://localhost:5432/shop";
         String user = "postgres";
-        String password = "postgres";
+        String password = "123456";
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Are you an admin or a customer? (admin/customer): ");
