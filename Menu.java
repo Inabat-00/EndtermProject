@@ -17,13 +17,15 @@ class Menu {
 
         while (keepRunning) {
             try {
-                System.out.println("\nMenu:");
-                System.out.println("1. View Products");
-                System.out.println("2. Add Product to Cart");
-                System.out.println("3. Exit");
-                System.out.println("4. Search Products by Name");
-                System.out.println("5. View Cart");
-                System.out.print("Enter your choice: ");
+                System.out.println("\n✨ Welcome to the Shopping System! ✨");
+                System.out.println("📌 Choose an option:");
+                System.out.println("1️⃣ View Products 🛍️");
+                System.out.println("2️⃣ Add Product to Cart 🛒");
+                System.out.println("3️⃣ Exit 🚪");
+                System.out.println("4️⃣ Search Products 🔎");
+                System.out.println("5️⃣ View Cart 📋");
+                System.out.print("👉 Enter your choice: ");
+
                 int choice = scanner.nextInt();
                 scanner.nextLine(); // Consume the newline character
 
@@ -34,16 +36,16 @@ class Menu {
                     }
                     case 2 -> {
                         viewProducts(url, user, password); // Display products before adding to cart
-                        System.out.print("\nEnter the product ID to add to your cart: ");
+                        System.out.print("\n🛍️ Enter the product ID to add to your cart: ");
                         int productId = scanner.nextInt();
-                        System.out.print("Enter the quantity: ");
+                        System.out.print("🔢 Enter the quantity: ");
                         int quantity = scanner.nextInt();
                         scanner.nextLine(); // Consume the newline character
                         cart.addToCart(url, user, password, productId, quantity);
                         promptReturnToMenu(scanner);
                     }
                     case 3 -> {
-                        System.out.println("Exiting menu... Thank you for shopping with us!");
+                        System.out.println("👋 Exiting menu... Thank you for shopping with us! Have a great day! 😊");
                         keepRunning = false; // Exit the menu loop
                     }
                     case 4 -> {
@@ -54,10 +56,10 @@ class Menu {
                         cart.viewCart(url, user, password); // View the cart using the Cart class
                         promptReturnToMenu(scanner);
                     }
-                    default -> System.out.println("Invalid choice. Please enter a number between 1 and 5.");
+                    default -> System.out.println("⚠️ Invalid choice! Please enter a number between 1 and 5.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                System.out.println("🚫 Invalid input! Please enter a valid number.");
                 scanner.nextLine(); // Clear the invalid input
             }
         }
@@ -70,9 +72,9 @@ class Menu {
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
-            System.out.println("\nAvailable Products:");
+            System.out.println("\n🌟 Available Products 🌟");
             while (resultSet.next()) {
-                System.out.printf("ID: %d, Name: %s, Category: %s, Price: %.2f\n",
+                System.out.printf("🆔 ID: %d | 🏷️ Name: %s | 📦 Category: %s | 💰 Price: %.2f KZT\n",
                         resultSet.getInt("product_id"),
                         resultSet.getString("name"),
                         resultSet.getString("category"),
@@ -80,12 +82,12 @@ class Menu {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error retrieving products: " + e.getMessage());
+            System.out.println("❌ Error retrieving products: " + e.getMessage());
         }
     }
 
     private void searchProducts(String url, String user, String password, Scanner scanner) {
-        System.out.print("Enter the product name or keyword to search: ");
+        System.out.print("🔎 Enter the product name or keyword to search: ");
         String keyword = scanner.nextLine().trim();
 
         String query = "SELECT * FROM products WHERE name ILIKE ? LIMIT 10";
@@ -96,28 +98,28 @@ class Menu {
             preparedStatement.setString(1, "%" + keyword + "%");
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                System.out.println("\nSearch Results:");
+                System.out.println("\n🔍 Search Results:");
                 boolean found = false;
                 while (resultSet.next()) {
                     found = true;
-                    System.out.printf("ID: %d, Name: %s, Category: %s, Price: %.2f\n",
+                    System.out.printf("🆔 ID: %d | 🏷️ Name: %s | 📦 Category: %s | 💰 Price: %.2f KZT\n",
                             resultSet.getInt("product_id"),
                             resultSet.getString("name"),
                             resultSet.getString("category"),
                             resultSet.getDouble("price"));
                 }
                 if (!found) {
-                    System.out.println("No products found matching your search.");
+                    System.out.println("❌ No products found matching your search.");
                 }
             }
 
         } catch (SQLException e) {
-            System.out.println("Error searching products: " + e.getMessage());
+            System.out.println("❌ Error searching products: " + e.getMessage());
         }
     }
 
     private void promptReturnToMenu(Scanner scanner) {
-        System.out.println("\nPress Enter to return to the menu...");
+        System.out.println("\n🔄 Press Enter to return to the menu...");
         scanner.nextLine(); // Wait for the user to press Enter
     }
 }
