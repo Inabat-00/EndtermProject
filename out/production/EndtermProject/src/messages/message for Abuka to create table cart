@@ -1,0 +1,7 @@
+Абука создай таблицу в бд корзину вот код
+CREATE TABLE cart (
+    id SERIAL PRIMARY KEY,
+    order_id INT REFERENCES orders(id),
+    book_id INT REFERENCES books(id),
+    quantity INT
+);

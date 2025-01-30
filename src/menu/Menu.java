@@ -6,12 +6,12 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
-    private int customerId; // Customer ID for cart operations
-    private Cart cart; // Instance of the Cart class
+    private int customerId;
+    private Cart cart;
 
     public Menu(int customerId) {
         this.customerId = customerId;
-        this.cart = new Cart(customerId); // Initialize the Cart class
+        this.cart = new Cart(customerId);
     }
 
     public void displayMenu(String url, String user, String password) {
@@ -30,7 +30,7 @@ public class Menu {
                 System.out.print("👉 Enter your choice: ");
 
                 int choice = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline character
+                scanner.nextLine();
 
                 switch (choice) {
                     case 1 -> viewProducts(url, user, password);
@@ -40,12 +40,12 @@ public class Menu {
                         keepRunning = false;
                     }
                     case 4 -> searchProducts(url, user, password, scanner);
-                    case 5 -> cart.viewCart(url, user, password); // View cart
+                    case 5 -> cart.viewCart(url, user, password);
                     default -> System.out.println("⚠️ Invalid choice! Please enter a number between 1 and 5.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("🚫 Invalid input! Please enter a valid number.");
-                scanner.nextLine(); // Clear the invalid input
+                scanner.nextLine();
             }
         }
     }

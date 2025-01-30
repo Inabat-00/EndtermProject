@@ -19,9 +19,9 @@ public class Main {
         } else if (role.equals("customer")) {
             Customers customers = new Customers();
             if (customers.start(url, user, password)) {
-                int customerId = customers.getCustomerId(); // Получаем ID клиента
-                Menu menu = new Menu(customerId); // Создаем меню для клиента
-                menu.displayMenu(url, user, password); // Показываем меню
+                int customerId = customers.getCustomerId();
+                Menu menu = new Menu(customerId);
+                menu.displayMenu(url, user, password);
             }
         } else {
             System.out.println("Invalid input. Program terminated.");

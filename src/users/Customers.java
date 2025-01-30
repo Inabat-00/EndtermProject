@@ -44,7 +44,7 @@ public class Customers {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                customerId = resultSet.getInt("customer_id"); // Save the logged-in customer's ID
+                customerId = resultSet.getInt("customer_id");
                 System.out.println("You have successfully logged in! Welcome back, " + resultSet.getString("name") + "!");
                 return true;
             } else {
@@ -76,18 +76,18 @@ public class Customers {
              PreparedStatement insertStatement = connection.prepareStatement(insertQuery);
              PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
 
-            // Insert the new customer
+
             insertStatement.setString(1, name);
             insertStatement.setString(2, phone);
             insertStatement.setString(3, email);
             insertStatement.setString(4, pass);
             insertStatement.executeUpdate();
 
-            // Retrieve the customer ID for the newly registered user
+
             selectStatement.setString(1, email);
             try (ResultSet resultSet = selectStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    customerId = resultSet.getInt("customer_id"); // Save the customerId
+                    customerId = resultSet.getInt("customer_id");
                     System.out.println("Registration successful! Welcome, " + name + "!");
                     return true;
                 }
