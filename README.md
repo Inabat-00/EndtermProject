@@ -1,4 +1,4 @@
-SShopping System 🛍️
+Shopping System 🛍️
 Overview 📌
 
 The Shopping System is a simple, user-friendly platform designed to allow customers to browse and shop for products. It offers key features such as viewing available products, adding items to the shopping cart, searching for specific products, and managing the cart. This system uses Java for its core functionality and SQL for storing and retrieving product data.
@@ -35,8 +35,6 @@ Installation 📥
 To install the system, clone the repository using the following command:
 
 bash
-Көшіру
-Өзгерту
 git clone https://github.com/Inabat-00/EndtermProject.git
 Database Schema 🏗️
 The system utilizes three tables in the database:
