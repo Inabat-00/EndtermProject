@@ -1,13 +1,30 @@
+<<<<<<< Updated upstream:Main.java
 import users.Admin;
 import menu.Menu;
 import users.Customers;
+=======
+import src.models.Admin;
+import src.models.Menu;
+import src.models.Customers;
+import src.repositories.ReviewRepository;
+import src.repositories.interfaces.IReviewRepository;
+import src.controllers.ReviewController;
+import src.controllers.interfaces.IReviewController;
+import src.data.PostgresDB;
+import src.data.interfaces.IDB;
+
+>>>>>>> Stashed changes:src/Main.java
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String url = "jdbc:postgresql://localhost:5432/shop";
+        String url = "jdbc:postgresql://localhost:5432/postgres";
         String user = "postgres";
-        String password = "123456";
+        String password = "Takanashi_13";
+
+        IDB db = new PostgresDB(url, user, password); // Подключение к БД
+        IReviewRepository reviewRepository = new ReviewRepository(db); // Репозиторий отзывов
+        IReviewController reviewController = new ReviewController(reviewRepository); // Контроллер отзывов
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Are you an admin or a customer? (admin/customer): ");
@@ -19,9 +36,15 @@ public class Main {
         } else if (role.equals("customer")) {
             Customers customers = new Customers();
             if (customers.start(url, user, password)) {
+<<<<<<< Updated upstream:Main.java
                 int customerId = customers.getCustomerId(); // Получаем ID клиента
                 Menu menu = new Menu(customerId); // Создаем меню для клиента
                 menu.displayMenu(url, user, password); // Показываем меню
+=======
+                int customerId = customers.getCustomerId();
+                Menu menu = new Menu(customerId, reviewController); // Передаем ReviewController
+                menu.displayMenu(url, user, password);
+>>>>>>> Stashed changes:src/Main.java
             }
         } else {
             System.out.println("Invalid input. Program terminated.");
