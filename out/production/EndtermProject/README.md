@@ -1,5 +1,6 @@
 Shopping System 🛍️
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 Description 📌
 
@@ -80,6 +81,8 @@ Miras
 
 
 =======
+=======
+>>>>>>> Stashed changes
 Overview 📌
 
 The Shopping System is a simple, user-friendly platform designed to allow customers to browse and shop for products. It offers key features such as viewing available products, adding items to the shopping cart, searching for specific products, and managing the cart. This system uses Java for its core functionality and SQL for storing and retrieving product data.
@@ -125,5 +128,8 @@ products (product_id, name, category, price)
 cart (id, product_id, customer_id, quantity)
 Author 👨‍💻
 Developed by: Abuka Inabat Zhan Miras
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 

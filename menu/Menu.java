@@ -15,6 +15,9 @@ public class Menu {
     private int customerId;
     private Cart cart;
     private IReviewController reviewController; // Используем интерфейс
+<<<<<<< Updated upstream:menu/Menu.java
+>>>>>>> Stashed changes:src/models/Menu.java
+=======
 >>>>>>> Stashed changes:src/models/Menu.java
 
     public Menu(int customerId, IReviewController reviewController) {
@@ -24,6 +27,9 @@ public class Menu {
 =======
         this.cart = new Cart(customerId);
         this.reviewController = reviewController;
+<<<<<<< Updated upstream:menu/Menu.java
+>>>>>>> Stashed changes:src/models/Menu.java
+=======
 >>>>>>> Stashed changes:src/models/Menu.java
     }
 
@@ -56,13 +62,19 @@ public class Menu {
                     }
                     case 4 -> searchProducts(url, user, password, scanner);
 <<<<<<< Updated upstream:menu/Menu.java
+<<<<<<< Updated upstream:menu/Menu.java
                     case 5 -> cart.viewCart(url, user, password); // View cart
                     default -> System.out.println("⚠️ Invalid choice! Please enter a number between 1 and 5.");
 =======
+=======
+>>>>>>> Stashed changes:src/models/Menu.java
                     case 5 -> cart.viewCart(url, user, password);
                     case 6 -> leaveReview(scanner);
                     case 7 -> viewProductReviews(scanner);
                     default -> System.out.println("⚠️ Invalid choice! Please enter a number between 1 and 7.");
+<<<<<<< Updated upstream:menu/Menu.java
+>>>>>>> Stashed changes:src/models/Menu.java
+=======
 >>>>>>> Stashed changes:src/models/Menu.java
                 }
             } catch (InputMismatchException e) {
