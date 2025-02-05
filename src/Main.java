@@ -1,6 +1,6 @@
-import users.Admin;
-import menu.Menu;
-import users.Customers;
+import src.models.Admin;
+import src.models.Menu;
+import src.models.Customers;
 import java.util.Scanner;
 
 public class Main {

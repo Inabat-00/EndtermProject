@@ -1,6 +1,5 @@
-package menu;
+package src.models;
 
-import items.Cart;
 import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;

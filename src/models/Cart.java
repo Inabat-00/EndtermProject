@@ -1,4 +1,4 @@
-package items;
+package src.models;
 import java.sql.*;
 import java.util.Scanner;
 
