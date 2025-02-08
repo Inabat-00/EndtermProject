@@ -16,7 +16,8 @@ public class Main {
         String user = "postgres";
         String password = "Takanashi_13";
 
-        IDB db = new PostgresDB(url, user, password); // Подключение к БД
+        IDB db; // Подключение к БД
+        db = new PostgresDB(url, user, password);
         IReviewRepository reviewRepository = new ReviewRepository(db); // Репозиторий отзывов
         IReviewController reviewController = new ReviewController(reviewRepository); // Контроллер отзывов
 
